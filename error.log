@@ -1,0 +1,4 @@
+2025-01-04 00:51:54,253 - ERROR - Failed to import cv2: No module named 'cv2'
+2025-01-04 00:51:54,253 - ERROR - Ensure that the OpenCV library is correctly installed and the paths are set properly.
+2025-01-04 19:06:45,859 - ERROR - Failed to import cv2: No module named 'cv2'
+2025-01-04 19:06:45,860 - ERROR - Ensure that the OpenCV library is correctly installed and the paths are set properly.

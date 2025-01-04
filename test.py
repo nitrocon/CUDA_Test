@@ -4,22 +4,39 @@ import logging
 import ctypes
 
 # Set up logging
-log_file = 'cuda_test.log'
-file_handler = logging.FileHandler(log_file)
-file_handler.setLevel(logging.DEBUG)
+info_log_file = 'info.log'
+debug_log_file = 'debug.log'
+error_log_file = 'error.log'
+
+info_file_handler = logging.FileHandler(info_log_file)
+info_file_handler.setLevel(logging.INFO)
+debug_file_handler = logging.FileHandler(debug_log_file)
+debug_file_handler.setLevel(logging.DEBUG)
+error_file_handler = logging.FileHandler(error_log_file)
+error_file_handler.setLevel(logging.ERROR)
 console_handler = logging.StreamHandler(sys.stdout)
 console_handler.setLevel(logging.INFO)
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s', handlers=[
-    file_handler,
+    info_file_handler,
+    debug_file_handler,
+    error_file_handler,
     console_handler
 ])
 
+# Remove ERROR and DEBUG levels from console handler
+console_handler.setLevel(logging.INFO)
+
+# Start the application
+logging.info("Starting CUDA Test App...")
+
 # Set environment variables for OpenCV
 opencv_dir = os.path.join(os.path.dirname(__file__), 'opencv')
+logging.info("Checking OpenCV directory...")
 if not os.path.exists(opencv_dir):
     logging.error(f"OpenCV directory not found: {opencv_dir}")
     raise FileNotFoundError(f"OpenCV directory not found: {opencv_dir}")
+logging.info("OpenCV directory found.")
 
 os.environ['OPENCV_DIR'] = opencv_dir
 os.environ['PATH'] += os.pathsep + os.path.join(opencv_dir, 'bin', 'Release')
@@ -48,7 +65,7 @@ logging.debug(f"Contents of {opencv_lib_release_dir}: {os.listdir(opencv_lib_rel
 
 # Ensure the DLLs are in the PATH
 os.environ['PATH'] += os.pathsep + opencv_bin_dir
-logging.debug(f"Added {opencv_bin_dir} to PATH")
+logging.info(f"Added {opencv_bin_dir} to PATH")
 
 # Log the current PATH
 logging.debug(f"Current PATH: {os.environ['PATH']}")
@@ -56,7 +73,7 @@ logging.debug(f"Current PATH: {os.environ['PATH']}")
 # Add the OpenCV Python bindings to sys.path
 sys.path.append(opencv_python_dir)
 sys.path.append(opencv_lib_release_dir)
-logging.debug(f"Added {opencv_python_dir} and {opencv_lib_release_dir} to sys.path")
+logging.info(f"Added {opencv_python_dir} and {opencv_lib_release_dir} to sys.path")
 
 # Log the current sys.path
 logging.debug(f"Current sys.path: {sys.path}")
@@ -78,6 +95,7 @@ else:
     logging.info(f"{opencv_lib_release_dir} successfully added to sys.path")
 
 # Check for necessary files
+logging.info("Checking necessary files for OpenCV...")
 necessary_files = [
     os.path.join(opencv_python_dir, 'cv2.cp312-win_amd64.pyd')  # Adjust the filename as necessary
 ]
@@ -85,12 +103,17 @@ necessary_files = [
 # Add all DLL files in the bin directory to the necessary files list
 necessary_files.extend([os.path.join(opencv_bin_dir, f) for f in os.listdir(opencv_bin_dir) if f.endswith('.dll')])
 
+missing_files = []
 for file in necessary_files:
     if not os.path.exists(file):
         logging.error(f"Necessary file not found: {file}")
-        raise FileNotFoundError(f"Necessary file not found: {file}")
+        missing_files.append(file)
     else:
-        logging.info(f"Found necessary file: {file}")
+        logging.debug(f"Found necessary file: {file}")
+
+if missing_files:
+    logging.error(f"Missing necessary files: {missing_files}")
+    raise FileNotFoundError(f"Missing necessary files: {missing_files}")
 
 if not any(fname.startswith('cv2') for fname in os.listdir(opencv_python_dir)):
     logging.error(f"OpenCV Python bindings not found in: {opencv_python_dir}")

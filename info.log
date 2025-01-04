@@ -1,0 +1,22 @@
+2025-01-04 00:51:54,241 - INFO - Starting CUDA Test App...
+2025-01-04 00:51:54,242 - INFO - Checking OpenCV directory...
+2025-01-04 00:51:54,242 - INFO - OpenCV directory found.
+2025-01-04 00:51:54,243 - INFO - Added /workspaces/CUDA_Test/opencv/bin/Release to PATH
+2025-01-04 00:51:54,243 - INFO - Added /workspaces/CUDA_Test/opencv/lib/python3/Release and /workspaces/CUDA_Test/opencv/lib/Release to sys.path
+2025-01-04 00:51:54,243 - INFO - /workspaces/CUDA_Test/opencv/bin/Release successfully added to PATH
+2025-01-04 00:51:54,244 - INFO - /workspaces/CUDA_Test/opencv/lib/python3/Release successfully added to sys.path
+2025-01-04 00:51:54,244 - INFO - /workspaces/CUDA_Test/opencv/lib/Release successfully added to sys.path
+2025-01-04 00:51:54,244 - INFO - Checking necessary files for OpenCV...
+2025-01-04 00:51:54,253 - ERROR - Failed to import cv2: No module named 'cv2'
+2025-01-04 00:51:54,253 - ERROR - Ensure that the OpenCV library is correctly installed and the paths are set properly.
+2025-01-04 19:06:45,850 - INFO - Starting CUDA Test App...
+2025-01-04 19:06:45,851 - INFO - Checking OpenCV directory...
+2025-01-04 19:06:45,851 - INFO - OpenCV directory found.
+2025-01-04 19:06:45,852 - INFO - Added /workspaces/CUDA_Test/opencv/bin/Release to PATH
+2025-01-04 19:06:45,852 - INFO - Added /workspaces/CUDA_Test/opencv/lib/python3/Release and /workspaces/CUDA_Test/opencv/lib/Release to sys.path
+2025-01-04 19:06:45,852 - INFO - /workspaces/CUDA_Test/opencv/bin/Release successfully added to PATH
+2025-01-04 19:06:45,852 - INFO - /workspaces/CUDA_Test/opencv/lib/python3/Release successfully added to sys.path
+2025-01-04 19:06:45,853 - INFO - /workspaces/CUDA_Test/opencv/lib/Release successfully added to sys.path
+2025-01-04 19:06:45,853 - INFO - Checking necessary files for OpenCV...
+2025-01-04 19:06:45,859 - ERROR - Failed to import cv2: No module named 'cv2'
+2025-01-04 19:06:45,860 - ERROR - Ensure that the OpenCV library is correctly installed and the paths are set properly.
