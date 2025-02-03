@@ -1,0 +1,88 @@
+cd CUDA_Test
+python -m venv venv
+source venv/Scripts/activate
+python.exe -m pip install --upgrade pip
+pip install -r requirements.txt
+python test.py
+
+pip install pyinstaller
+pyinstaller --onefile --windowed --icon=icon.ico --add-data "icon.ico;." test.py
+
+pip install nuitka
+python -m nuitka --standalone --onefile \
+--enable-plugin=tk-inter \
+--windows-icon-from-ico=icon.ico \
+--include-data-file=icon.ico=icon.ico \
+--windows-console-mode=disable \
+test.py
+
+# Alle Module global deinstallieren
+pip freeze
+pip freeze > requirements.txt
+pip uninstall -r requirements.txt -y
+pip freeze
+
+# Den Gitbash Cache leeren
+python -m pip list
+python -m site
+python -m pip cache purge
+python -m pip freeze | xargs python -m pip uninstall -y
+
+# CUDA überprüfen
+import torch
+import torchvision
+
+x = torch.rand(2, 3)
+print(x)
+print(torch.__version__)
+print(torch.cuda.is_available())
+print(torch.cuda.current_device())
+print(torchvision.__version__)  
+
+# OpenCV-Quellen herunterladen
+git clone https://github.com/opencv/opencv.git
+git clone https://github.com/opencv/opencv_contrib.git
+
+# OpenCV mit CMake konfigurieren
+cd opencv
+mkdir build
+cd build
+
+# Umgebungsvariablen setzen
+export PATH="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4/bin:$PATH"
+export PATH="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4/libnvvp:$PATH"
+export CUDA_HOME="/c/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4"
+export CUDNN_LIBRARY="/c/Program Files/NVIDIA/CUDNN/v9.1/lib/x64/cudnn.lib"
+export CUDNN_INCLUDE_DIR="/c/Program Files/NVIDIA/CUDNN/v9.1/include/12.4"
+
+echo $PATH
+echo $CUDA_HOME
+echo $CUDNN_LIBRARY
+echo $CUDNN_INCLUDE_DIR
+python -c "import sys; print(sys.path)"
+
+cmake -D CMAKE_BUILD_TYPE=Release \
+      -D CMAKE_INSTALL_PREFIX=C:/Arbeitszimmer/Projekte/Python-Apps/opencv/build/install \
+      -D OPENCV_EXTRA_MODULES_PATH=C:/Arbeitszimmer/Projekte/Python-Apps/opencv_contrib/modules \
+      -D WITH_CUDA=ON \
+      -D CUDA_ARCH_BIN=7.5 \
+      -D CUDA_ARCH_PTX=7.5 \
+      -D WITH_CUDNN=ON \
+      -D OPENCV_DNN_CUDA=ON \
+      -D ENABLE_FAST_MATH=1 \
+      -D CUDA_FAST_MATH=1 \
+      -D WITH_CUBLAS=1 \
+      -D CUDA_TOOLKIT_ROOT_DIR="C:/Program Files/NVIDIA GPU Computing Toolkit/CUDA/v12.4" \
+      -D CUDNN_LIBRARY="C:/Program Files/NVIDIA/CUDNN/v9.1/lib/x64/cudnn.lib" \
+      -D CUDNN_INCLUDE_DIR="C:/Program Files/NVIDIA/CUDNN/v9.1/include/12.4" \
+      -D BUILD_opencv_python3=ON \
+      -D PYTHON3_EXECUTABLE=C:/Users/Nitrocon/AppData/Local/Programs/Python/Python312/python.exe \
+      ..
+
+# OpenCV kompilieren und installieren
+cmake --build . --config Release --target INSTALL
+
+opencv/build bin, lib und include kopieren
+
+
+
